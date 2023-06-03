@@ -6,6 +6,7 @@ class Api {
     this._urlUser = options.urlUser;
     this._urlCards = options.urlCards;
     this._urlAvatar = options.urlAvatar;
+    this._newCards = options.newCards;
   }
   //Проверка ответа сервера и преобразование из json
   _getResponseData(response) {
@@ -67,15 +68,16 @@ class Api {
   }
   //Удаление карточки на сервере
   async deleteCard(cardId) {
-    const response = await fetch(`${this._baseUrl}${this._urlCards}${cardId}`, {
+    const response = await fetch(`${this._baseUrl}${this._urlCards}/${cardId}`, {
       method: 'DELETE',
       headers: this._headers
     });
     return this._getResponseData(response);
   }
+
   //Добавление лайка на сервере
   async putLike(cardId) {
-    const response = await fetch(`${this._baseUrl}${this._urlCards}${cardId}/likes`, {
+    const response = await fetch(`${this._baseUrl}${this._urlCards}/${cardId}/likes`, {
       method: 'PUT',
       headers: this._headers
     });
@@ -83,11 +85,27 @@ class Api {
   }
   //Удаление лайка на сервере
   async deleteLike(cardId) {
-    const response = await fetch(`${this._baseUrl}${this._urlCards}${cardId}/likes`, {
+    const response = await fetch(`${this._baseUrl}${this._urlCards}/${cardId}/likes`, {
       method: 'DELETE',
       headers: this._headers
     });
     return this._getResponseData(response);
   }
+
+  changeLikeCardStatus(cardId, isLiked) {
+    if (isLiked) {
+      return this.putLike(cardId);
+    } else {
+      return this.deleteLike(cardId);
+    }
+  }
+  /*
+  //Добавление карточек на сервер
+  postCards() {
+    this._newCards.forEach(card => {
+      return this.postNewCard(card);
+    });
+  }
+  */
 }
 export const api = new Api(optionsApi);

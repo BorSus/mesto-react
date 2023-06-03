@@ -1,58 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import avatar from '../images/profile_avatar.jpg';
-import { api } from '../utils/Api.js';
+import React, { useContext } from 'react';
 import Card from './Card';
-function Main(props) {
-  //переменная состояния = имя пользователя
-  const [userName, setUserName] = useState('???');
-  //переменная состояния = описание пользователя
-  const [userDescription, setUserDescription] = useState('???');
-  //переменная состояния = аватар пользователя
-  const [userAvatar, setUserAvatar] = useState(avatar);
-  //переменная состояния = id пользователя
-  const [userID, setUserID] = useState('???');
-  //переменная состояния = id пользователя
-  const [cards, setCards] = useState([]);
-  useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
-      .then(([userInfo, initialCards]) => {
-        setUserName(userInfo.name);
-        setUserDescription(userInfo.about);
-        setUserAvatar(userInfo.avatar);
-        setUserID(userInfo._id);
-        setCards(initialCards);
-      })
-      .catch(error => {
-        console.error(`Ошибка при добавлении данных сервера: ${error}`);
-      })
-      .finally(() => {
-        console.info('Добавление данных с сервера-завершено');
-      });
-  }, []);
+import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
+function Main({
+  cards,
+  onEditAvatar,
+  onEditProfile,
+  onAddPlace,
+  onCardClick,
+  onIconDeleteClick,
+  onCardLike
+}) {
+  //Подписка на контекст данные пользователя
+  const currentUser = useContext(CurrentUserContext);
   return (
     <main className="content">
       <section className="profile">
         <div className="profile__info">
-          <div className="profile__avatar-edite" onClick={props.onEditAvatar}>
-            <img src={userAvatar} alt="Фото профиля" className="profile__avatar" />
+          <div className="profile__avatar-edite" onClick={onEditAvatar}>
+            <img src={currentUser.avatar} alt="Фото профиля" className="profile__avatar" />
           </div>
           <div className="profile__edit">
-            <h1 className="profile__name">{userName}</h1>
+            <h1 className="profile__name">{currentUser.name}</h1>
             <button
               type="button"
               className="profile__edite-button"
               aria-label="Редактировать профиль"
-              onClick={props.onEditProfile}
+              onClick={onEditProfile}
             ></button>
-            <p className="profile__description">{userDescription}</p>
+            <p className="profile__description">{currentUser.about}</p>
           </div>
         </div>
         <button
           type="button"
           className="profile__add-button"
           aria-label="Добавить"
-          onClick={props.onAddPlace}
+          onClick={onAddPlace}
         ></button>
       </section>
 
@@ -60,10 +43,10 @@ function Main(props) {
         {cards.map(cardItem => (
           <Card
             card={cardItem}
-            userID={userID}
             key={cardItem._id}
-            onCardClick={props.onCardClick}
-            onIconDeleteClick={props.onIconDeleteClick}
+            onCardClick={onCardClick}
+            onIconDeleteClick={onIconDeleteClick}
+            onCardLike={onCardLike}
           />
         ))}
       </section>
