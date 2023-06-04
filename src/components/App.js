@@ -167,56 +167,54 @@ function App() {
     setFormValidatorList(validators);
   }, []);
   //console.log(formValidatorList);
-
+  //!!У компонента только один элемент на верхнем уровне разметки, поэтому дополнительная обертка не нужна. OK
   return (
-    <>
-      <CurrentUserContext.Provider value={currentUser}>
-        <Header />
-        <Main
-          cards={cards}
-          onEditAvatar={handleEditAvatarClick}
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          onCardClick={handleCardClick}
-          onIconDeleteClick={handleDeleteIconClick}
-          onCardLike={handleCardLike}
-        />
-        <Footer />
-        {/* === Popup редактирование профиля ===*/}
-        <EditProfilePopup
-          isOpen={isEditProfilePopupOpen}
-          onClose={closeAllPopups}
-          onUpdateUser={handleUpdateUser}
-          isLoad={isLoad}
-        />
-        {/* === Popup редактирование аватара ===*/}
-        <EditAvatarPopup
-          isOpen={isEditAvatarPopupOpen}
-          onClose={closeAllPopups}
-          onUpdateAvatar={handleUpdateAvatar}
-          isLoad={isLoad}
-        />
-        {/* === Popup добавление карточки ===*/}
-        <AddPlacePopup
-          isOpen={isAddPlacePopupOpen}
-          onClose={closeAllPopups}
-          onUpdateAvatar={handleAddPlaceSubmit}
-          onAddPlace={handleAddPlaceSubmit}
-          isLoad={isLoad}
-        />
-        {/* === Popup подтверждения удаления карточки ===*/}
-        <PopupWithForm
-          namePopup="popupConfirm"
-          popupTitle="Вы уверены?"
-          textSubmitButton={isLoad ? 'Удаление...' : 'Да'}
-          isOpen={isConfirmPopupOpen}
-          onClose={closeAllPopups}
-          onSubmit={handleConfirmDeleteCard}
-        ></PopupWithForm>
+    <CurrentUserContext.Provider value={currentUser}>
+      <Header />
+      <Main
+        cards={cards}
+        onEditAvatar={handleEditAvatarClick}
+        onEditProfile={handleEditProfileClick}
+        onAddPlace={handleAddPlaceClick}
+        onCardClick={handleCardClick}
+        onIconDeleteClick={handleDeleteIconClick}
+        onCardLike={handleCardLike}
+      />
+      <Footer />
+      {/* === Popup редактирование профиля ===*/}
+      <EditProfilePopup
+        isOpen={isEditProfilePopupOpen}
+        onClose={closeAllPopups}
+        onUpdateUser={handleUpdateUser}
+        isLoad={isLoad}
+      />
+      {/* === Popup редактирование аватара ===*/}
+      <EditAvatarPopup
+        isOpen={isEditAvatarPopupOpen}
+        onClose={closeAllPopups}
+        onUpdateAvatar={handleUpdateAvatar}
+        isLoad={isLoad}
+      />
+      {/* === Popup добавление карточки ===*/}
+      <AddPlacePopup
+        isOpen={isAddPlacePopupOpen}
+        onClose={closeAllPopups}
+        onUpdateAvatar={handleAddPlaceSubmit}
+        onAddPlace={handleAddPlaceSubmit}
+        isLoad={isLoad}
+      />
+      {/* === Popup подтверждения удаления карточки ===*/}
+      <PopupWithForm
+        namePopup="popupConfirm"
+        popupTitle="Вы уверены?"
+        textSubmitButton={isLoad ? 'Удаление...' : 'Да'}
+        isOpen={isConfirmPopupOpen}
+        onClose={closeAllPopups}
+        onSubmit={handleConfirmDeleteCard}
+      ></PopupWithForm>
 
-        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-      </CurrentUserContext.Provider>
-    </>
+      <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+    </CurrentUserContext.Provider>
   );
 }
 export default App;

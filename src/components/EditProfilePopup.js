@@ -11,10 +11,14 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, isLoad }) {
   //Подписка на контекст данные пользователя
   const currentUser = useContext(CurrentUserContext);
   // После загрузки текущего пользователя из API его данные будут использованы в управляемых компонентах.
-  useEffect(() => {
-    setName(currentUser.name);
-    setDescription(currentUser.about);
-  }, [currentUser]);
+  useEffect(
+    () => {
+      setName(currentUser.name);
+      setDescription(currentUser.about);
+    },
+    //!! При открытии модального окна  в полях формы могут быть данные, которые могли остаться с прошлого открытия формы. Правильным поведением является подставлять данные в поля формы не только при изменении данных пользователя, но и при открытии модального окна OK
+    [currentUser, isOpen]
+  );
 
   // Обработчик изменения инпута обновляет стейт name
   function handleChangeName(e) {

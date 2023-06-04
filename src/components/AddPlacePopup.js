@@ -1,11 +1,18 @@
 /* === Popup добавление карточки ===*/
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PopupWithForm from './PopupWithForm';
 function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoad }) {
   //переменная состояния = cтейт, в котором содержится значение inputPlacename
   const [name, setName] = useState('');
   //переменная состояния = cтейт, в котором содержится значение inputImageLink
   const [link, setLink] = useState('');
+  //!!При открытии формы нужно очищать поля, чтобы данные, оставшиеся от прошлого заполнения формы не мешали пользователю создавать новую карточку. OK
+  //сброс cтейтов, при открытии
+  useEffect(() => {
+    setName(''); //в котором содержится значение inputPlacename
+    setLink(''); //в котором содержится значение inputImageLink
+  }, [isOpen]);
+
   // Обработчик изменения инпута обновляет стейт name
   function handleChangeName(e) {
     setName(e.target.value);
@@ -22,6 +29,11 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoad }) {
       name,
       link
     });
+    /*
+    //сброс cтейтов, после подтверждения отпраки на сервер 
+    setName('');//в котором содержится значение inputPlacename
+    setLink('');//в котором содержится значение inputImageLink
+    */
   }
   return (
     <PopupWithForm
@@ -41,6 +53,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoad }) {
           placeholder="Название"
           minLength="2"
           maxLength="30"
+          value={name}
           onChange={handleChangeName}
           required
         />
@@ -55,6 +68,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoad }) {
           name="link"
           id="inputImageLink"
           placeholder="Ссылка на картинку"
+          value={link}
           onChange={handleChangeLink}
           required
         />

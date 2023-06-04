@@ -1,10 +1,15 @@
 /* === Popup редактирование аватара ===*/
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import PopupWithForm from './PopupWithForm';
 
 function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoad }) {
   //переменная в котором содержится значение inputAvatarLink
   const inputAvatarLink = useRef();
+  //!!При открытии формы нужно очистить поле ввода. OK
+  //сброс значения inputAvatarLink, при открытии
+  useEffect(() => {
+    inputAvatarLink.current.value = '';
+  }, [isOpen]);
   // Обработчик изменения аватара пользователя на сервере
   function handleSubmit(e) {
     // Запрещаем браузеру переходить по адресу формы
@@ -12,6 +17,10 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoad }) {
     onUpdateAvatar({
       avatar: inputAvatarLink.current.value
     });
+    /*
+    //очищение inputAvatarLink при отпраки на сервер
+    inputAvatarLink.current.value = '';
+    */
   }
   return (
     <PopupWithForm
